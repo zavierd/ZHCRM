@@ -1,29 +1,83 @@
-graph LR
-    subgraph "角色继承关系"
+graph TB
+    %% 角色继承关系
+    subgraph "角色继承体系"
         USER[普通用户]
         SALES[销售]
         SALES_MGR[销售主管]
         DESIGNER[设计师]
         FINANCE[财务]
         ADMIN[系统管理员]
-        
+
         USER --> SALES
         SALES --> SALES_MGR
         USER --> DESIGNER
         USER --> FINANCE
         USER --> ADMIN
     end
-    
-    subgraph "权限矩阵"
-        MATRIX["
-        | 角色/资源        | 项目创建 | 项目查看 | 项目编辑 | 项目删除 | 客户管理 | 报价修改 | 文件上传 | 报表导出 |
-        |------------------|----------|----------|----------|----------|----------|----------|----------|----------|
-        | 销售             | ✅       | ✅(自己) | ✅       | ❌       | ✅       | ✅       | 🟡(限制) | ❌       |
-        | 销售主管         | ✅       | ✅(团队) | ✅       | 🟡(审批) | ✅       | ✅       | ✅       | ✅       |
-        | 设计师           | ❌       | ✅(相关) | 🟡(方案) | ❌       | 🟡(只读) | ❌       | ✅       | ❌       |
-        | 财务             | ❌       | ✅(相关) | 🟡(价格) | ❌       | 🟡(只读) | 🟡(审核) | ❌       | ✅       |
-        | 系统管理员       | ✅       | ✅       | ✅       | ✅       | ✅       | ✅       | ✅       | ✅       |
-        
-        图例：✅=允许 ❌=拒绝 🟡=条件允许
-        "]
+
+    %% 权限资源
+    subgraph "系统资源"
+        PROJECT_CREATE[项目创建]
+        PROJECT_VIEW[项目查看]
+        PROJECT_EDIT[项目编辑]
+        PROJECT_DELETE[项目删除]
+        CUSTOMER_MGMT[客户管理]
+        QUOTE_EDIT[报价修改]
+        FILE_UPLOAD[文件上传]
+        REPORT_EXPORT[报表导出]
     end
+
+    %% 销售权限
+    SALES -.->|允许| PROJECT_CREATE
+    SALES -.->|允许(自己)| PROJECT_VIEW
+    SALES -.->|允许| PROJECT_EDIT
+    SALES -.->|拒绝| PROJECT_DELETE
+    SALES -.->|允许| CUSTOMER_MGMT
+    SALES -.->|允许| QUOTE_EDIT
+    SALES -.->|限制| FILE_UPLOAD
+    SALES -.->|拒绝| REPORT_EXPORT
+
+    %% 销售主管权限(继承销售+扩展)
+    SALES_MGR -.->|允许(团队)| PROJECT_VIEW
+    SALES_MGR -.->|审批| PROJECT_DELETE
+    SALES_MGR -.->|允许| FILE_UPLOAD
+    SALES_MGR -.->|允许| REPORT_EXPORT
+
+    %% 设计师权限
+    DESIGNER -.->|拒绝| PROJECT_CREATE
+    DESIGNER -.->|允许(相关)| PROJECT_VIEW
+    DESIGNER -.->|方案| PROJECT_EDIT
+    DESIGNER -.->|拒绝| PROJECT_DELETE
+    DESIGNER -.->|只读| CUSTOMER_MGMT
+    DESIGNER -.->|拒绝| QUOTE_EDIT
+    DESIGNER -.->|允许| FILE_UPLOAD
+    DESIGNER -.->|拒绝| REPORT_EXPORT
+
+    %% 财务权限
+    FINANCE -.->|拒绝| PROJECT_CREATE
+    FINANCE -.->|允许(相关)| PROJECT_VIEW
+    FINANCE -.->|价格| PROJECT_EDIT
+    FINANCE -.->|拒绝| PROJECT_DELETE
+    FINANCE -.->|只读| CUSTOMER_MGMT
+    FINANCE -.->|审核| QUOTE_EDIT
+    FINANCE -.->|拒绝| FILE_UPLOAD
+    FINANCE -.->|允许| REPORT_EXPORT
+
+    %% 系统管理员权限(全部允许)
+    ADMIN -.->|允许| PROJECT_CREATE
+    ADMIN -.->|允许| PROJECT_VIEW
+    ADMIN -.->|允许| PROJECT_EDIT
+    ADMIN -.->|允许| PROJECT_DELETE
+    ADMIN -.->|允许| CUSTOMER_MGMT
+    ADMIN -.->|允许| QUOTE_EDIT
+    ADMIN -.->|允许| FILE_UPLOAD
+    ADMIN -.->|允许| REPORT_EXPORT
+
+    %% 样式定义
+    classDef roleNode fill:#e3f2fd,stroke:#1976d2,color:#000
+    classDef resourceNode fill:#f3e5f5,stroke:#7b1fa2,color:#000
+    classDef adminNode fill:#ffebee,stroke:#d32f2f,color:#000
+
+    class USER,SALES,SALES_MGR,DESIGNER,FINANCE roleNode
+    class PROJECT_CREATE,PROJECT_VIEW,PROJECT_EDIT,PROJECT_DELETE,CUSTOMER_MGMT,QUOTE_EDIT,FILE_UPLOAD,REPORT_EXPORT resourceNode
+    class ADMIN adminNode
