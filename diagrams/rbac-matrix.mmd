@@ -1,12 +1,12 @@
 graph TB
-    %% Role Inheritance
-    subgraph roles ["Role Hierarchy"]
-        USER[User]
-        SALES[Sales]
-        SALES_MGR[Sales Manager]
-        DESIGNER[Designer]
-        FINANCE[Finance]
-        ADMIN[System Admin]
+    %% 角色继承关系
+    subgraph roles ["角色继承体系"]
+        USER[普通用户]
+        SALES[销售]
+        SALES_MGR[销售主管]
+        DESIGNER[设计师]
+        FINANCE[财务]
+        ADMIN[系统管理员]
 
         USER --> SALES
         SALES --> SALES_MGR
@@ -15,28 +15,28 @@ graph TB
         USER --> ADMIN
     end
 
-    %% System Resources
-    subgraph resources ["System Resources"]
-        PROJECT_CREATE[Create Project]
-        PROJECT_VIEW[View Project]
-        PROJECT_EDIT[Edit Project]
-        PROJECT_DELETE[Delete Project]
-        CUSTOMER_MGMT[Customer Management]
-        QUOTE_EDIT[Quote Management]
-        FILE_UPLOAD[File Upload]
-        REPORT_EXPORT[Export Reports]
+    %% 系统资源
+    subgraph resources ["系统资源"]
+        PROJECT_CREATE[项目创建]
+        PROJECT_VIEW[项目查看]
+        PROJECT_EDIT[项目编辑]
+        PROJECT_DELETE[项目删除]
+        CUSTOMER_MGMT[客户管理]
+        QUOTE_EDIT[报价管理]
+        FILE_UPLOAD[文件上传]
+        REPORT_EXPORT[报表导出]
     end
 
-    %% Permission Matrix
-    subgraph permissions ["Permission Matrix"]
+    %% 权限矩阵
+    subgraph permissions ["权限矩阵"]
         PERM_MATRIX["
-        Sales: ✅Create ✅View(Own) ✅Edit ❌Delete ✅Customer ✅Quote 🟡File ❌Report
-        Sales Mgr: ✅Create ✅View(Team) ✅Edit 🟡Delete ✅Customer ✅Quote ✅File ✅Report
-        Designer: ❌Create ✅View(Related) 🟡Edit(Design) ❌Delete 🟡Customer(Read) ❌Quote ✅File ❌Report
-        Finance: ❌Create ✅View(Related) 🟡Edit(Price) ❌Delete 🟡Customer(Read) 🟡Quote(Review) ❌File ✅Report
-        Admin: ✅All Permissions
+        销售: ✅创建 ✅查看自己 ✅编辑 ❌删除 ✅客户 ✅报价 🟡文件 ❌报表
+        销售主管: ✅创建 ✅查看团队 ✅编辑 🟡删除 ✅客户 ✅报价 ✅文件 ✅报表
+        设计师: ❌创建 ✅查看相关 🟡编辑方案 ❌删除 🟡客户只读 ❌报价 ✅文件 ❌报表
+        财务: ❌创建 ✅查看相关 🟡编辑价格 ❌删除 🟡客户只读 🟡报价审核 ❌文件 ✅报表
+        系统管理员: ✅全部权限
 
-        Legend: ✅Allow ❌Deny 🟡Conditional
+        图例: ✅允许 ❌拒绝 🟡条件允许
         "]
     end
 

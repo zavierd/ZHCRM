@@ -1,115 +1,115 @@
 erDiagram
     USERS {
-        uuid id PK
-        string username
-        string email
-        string password_hash
-        uuid role_id FK
-        timestamp created_at
-        timestamp updated_at
+        uuid id PK "用户ID"
+        string username "用户名"
+        string email "邮箱"
+        string password_hash "密码哈希"
+        uuid role_id FK "角色ID"
+        timestamp created_at "创建时间"
+        timestamp updated_at "更新时间"
     }
-    
+
     ROLES {
-        uuid id PK
-        string role_name
-        string description
-        json permissions
-        timestamp created_at
+        uuid id PK "角色ID"
+        string role_name "角色名称"
+        string description "角色描述"
+        json permissions "权限配置"
+        timestamp created_at "创建时间"
     }
-    
+
     ACCOUNTS {
-        uuid id PK
-        string company_name
-        string industry
-        string address
-        string phone
-        uuid owner_id FK
-        timestamp created_at
-        timestamp updated_at
+        uuid id PK "账户ID"
+        string company_name "公司名称"
+        string industry "行业"
+        string address "地址"
+        string phone "电话"
+        uuid owner_id FK "负责人ID"
+        timestamp created_at "创建时间"
+        timestamp updated_at "更新时间"
     }
-    
+
     CONTACTS {
-        uuid id PK
-        string first_name
-        string last_name
-        string email
-        string phone
-        uuid account_id FK
-        timestamp created_at
-        timestamp updated_at
+        uuid id PK "联系人ID"
+        string first_name "名"
+        string last_name "姓"
+        string email "邮箱"
+        string phone "电话"
+        uuid account_id FK "所属账户ID"
+        timestamp created_at "创建时间"
+        timestamp updated_at "更新时间"
     }
-    
+
     PROJECTS {
-        uuid id PK
-        string project_name
-        uuid account_id FK
-        string status
-        decimal value
-        date close_date
-        uuid owner_id FK
-        timestamp created_at
-        timestamp updated_at
+        uuid id PK "项目ID"
+        string project_name "项目名称"
+        uuid account_id FK "客户账户ID"
+        string status "项目状态"
+        decimal value "项目价值"
+        date close_date "预计完成日期"
+        uuid owner_id FK "项目负责人ID"
+        timestamp created_at "创建时间"
+        timestamp updated_at "更新时间"
     }
-    
+
     TASKS {
-        uuid id PK
-        string title
-        text description
-        date due_date
-        string status
-        string priority
-        uuid assignee_id FK
-        uuid project_id FK
-        timestamp created_at
-        timestamp updated_at
+        uuid id PK "任务ID"
+        string title "任务标题"
+        text description "任务描述"
+        date due_date "截止日期"
+        string status "任务状态"
+        string priority "优先级"
+        uuid assignee_id FK "指派人ID"
+        uuid project_id FK "所属项目ID"
+        timestamp created_at "创建时间"
+        timestamp updated_at "更新时间"
     }
-    
+
     ACTIVITIES {
-        uuid id PK
-        string type
-        string subject
-        text notes
-        uuid related_to_id
-        string related_to_type
-        uuid user_id FK
-        timestamp created_at
+        uuid id PK "活动ID"
+        string type "活动类型"
+        string subject "活动主题"
+        text notes "活动备注"
+        uuid related_to_id "关联对象ID"
+        string related_to_type "关联对象类型"
+        uuid user_id FK "操作用户ID"
+        timestamp created_at "创建时间"
     }
-    
+
     DOCUMENTS {
-        uuid id PK
-        string file_name
-        string file_path
-        string file_type
-        integer file_size
-        uuid uploader_id FK
-        uuid project_id FK
-        timestamp created_at
+        uuid id PK "文档ID"
+        string file_name "文件名"
+        string file_path "文件路径"
+        string file_type "文件类型"
+        integer file_size "文件大小"
+        uuid uploader_id FK "上传者ID"
+        uuid project_id FK "所属项目ID"
+        timestamp created_at "创建时间"
     }
-    
+
     WORKFLOW_INSTANCES {
-        uuid id PK
-        string process_definition_key
-        string business_key
-        string status
-        json variables
-        uuid initiated_by FK
-        timestamp started_at
-        timestamp ended_at
+        uuid id PK "工作流实例ID"
+        string process_definition_key "流程定义键"
+        string business_key "业务键"
+        string status "实例状态"
+        json variables "流程变量"
+        uuid initiated_by FK "发起人ID"
+        timestamp started_at "开始时间"
+        timestamp ended_at "结束时间"
     }
     
     %% 关系定义
-    USERS ||--o{ ACCOUNTS : owns
-    USERS ||--o{ PROJECTS : owns
-    USERS ||--o{ TASKS : assigned_to
-    USERS ||--o{ ACTIVITIES : created_by
-    USERS ||--o{ DOCUMENTS : uploaded_by
-    USERS ||--o{ WORKFLOW_INSTANCES : initiated_by
-    USERS }o--|| ROLES : has_role
-    
-    ACCOUNTS ||--o{ CONTACTS : has_contacts
-    ACCOUNTS ||--o{ PROJECTS : has_projects
-    
-    PROJECTS ||--o{ TASKS : contains_tasks
-    PROJECTS ||--o{ DOCUMENTS : has_documents
-    
-    CONTACTS }o--o{ PROJECTS : involved_in
+    USERS ||--o{ ACCOUNTS : "拥有"
+    USERS ||--o{ PROJECTS : "负责"
+    USERS ||--o{ TASKS : "被指派"
+    USERS ||--o{ ACTIVITIES : "创建"
+    USERS ||--o{ DOCUMENTS : "上传"
+    USERS ||--o{ WORKFLOW_INSTANCES : "发起"
+    USERS }o--|| ROLES : "具有角色"
+
+    ACCOUNTS ||--o{ CONTACTS : "包含联系人"
+    ACCOUNTS ||--o{ PROJECTS : "拥有项目"
+
+    PROJECTS ||--o{ TASKS : "包含任务"
+    PROJECTS ||--o{ DOCUMENTS : "关联文档"
+
+    CONTACTS }o--o{ PROJECTS : "参与项目"

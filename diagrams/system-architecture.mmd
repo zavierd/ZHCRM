@@ -12,19 +12,19 @@ graph TB
     %% 核心微服务层
     subgraph "核心微服务层"
         AUTH[用户认证服务<br/>- 用户管理<br/>- RBAC权限<br/>- OAuth 2.0<br/>- JWT令牌]
-        
+
         CUSTOMER[客户账户服务<br/>- 客户信息<br/>- 公司档案<br/>- 联系人管理<br/>- 客户画像]
-        
+
         PROJECT[项目机会服务<br/>- 售前流程<br/>- 售后项目<br/>- 商机管理<br/>- 销售漏斗]
-        
+
         TASK[任务管理服务<br/>- 任务分配<br/>- 看板视图<br/>- 进度跟踪<br/>- 协作工具]
-        
+
         WORKFLOW[工作流服务<br/>- Camunda BPM<br/>- 流程自动化<br/>- Saga编排<br/>- 业务规则]
-        
+
         AI_SERVICE[AI智能服务<br/>- RAG问答<br/>- 智能体<br/>- 预测分析<br/>- NLP处理]
-        
+
         INTEGRATION[集成服务<br/>- 第三方API<br/>- Webhook处理<br/>- 数据同步<br/>- 消息转换]
-        
+
         NOTIFICATION[通知服务<br/>- 应用内消息<br/>- 邮件推送<br/>- 移动通知<br/>- 实时通信]
     end
 

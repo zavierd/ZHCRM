@@ -5,34 +5,34 @@ graph TB
         CASE[历史案例]
         POLICY[公司政策]
     end
-    
+
     subgraph "数据处理管道"
         LOAD[文档加载器<br/>LangChain/LlamaIndex]
-        SPLIT[文本分块<br/>RecursiveCharacterTextSplitter]
-        EMBED[嵌入生成<br/>multilingual-e5-large]
+        SPLIT[文本分块<br/>递归字符分割]
+        EMBED[嵌入生成<br/>多语言嵌入模型]
         STORE[向量存储<br/>Milvus]
     end
-    
+
     subgraph "检索增强"
         QUERY[用户查询]
         RETRIEVE[语义检索<br/>Top-K相似度]
-        RERANK[重排序<br/>Cohere Rerank]
+        RERANK[重排序<br/>Cohere重排]
         CONTEXT[上下文构建]
     end
-    
+
     subgraph "生成服务"
         LLM[大语言模型<br/>GPT-4/本地模型]
         PROMPT[提示工程]
         ANSWER[答案生成]
         CITE[引用标注]
     end
-    
+
     subgraph "AI智能体"
         SCORE_AGENT[机会评分智能体<br/>- 历史数据分析<br/>- 成交概率预测]
         FORECAST_AGENT[销售预测智能体<br/>- 时间序列分析<br/>- 趋势预测]
         MONITOR_AGENT[流程监控智能体<br/>- 异常检测<br/>- 自动预警]
     end
-    
+
     subgraph "应用接口"
         CRM_UI[CRM前端]
         WORKFLOW_TASK[工作流任务]

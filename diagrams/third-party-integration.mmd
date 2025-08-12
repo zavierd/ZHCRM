@@ -4,46 +4,46 @@ graph TB
         NOTIFICATION_SVC[通知服务]
         WORKFLOW_SVC[工作流服务]
     end
-    
+
     subgraph "企业微信集成"
-        WECHAT_API[企业微信API]
-        WECHAT_WEBHOOK[微信Webhook]
-        WECHAT_BOT[微信机器人]
+        WECHAT_API[企业微信开放API]
+        WECHAT_WEBHOOK[企业微信回调]
+        WECHAT_BOT[企业微信机器人]
     end
-    
+
     subgraph "钉钉集成"
         DINGTALK_API[钉钉开放API]
-        DINGTALK_WEBHOOK[钉钉Webhook]
-        DINGTALK_BOT[钉钉机器人]
+        DINGTALK_WEBHOOK[钉钉回调接口]
+        DINGTALK_BOT[钉钉自定义机器人]
     end
-    
+
     subgraph "邮件系统"
-        SMTP[SMTP服务]
-        IMAP[IMAP服务]
-        EMAIL_TEMPLATE[邮件模板]
+        SMTP[SMTP发送服务]
+        IMAP[IMAP接收服务]
+        EMAIL_TEMPLATE[邮件模板引擎]
     end
-    
+
     subgraph "其他系统"
-        ERP_API[ERP接口]
-        FINANCE_API[财务系统]
-        OA_API[OA系统]
+        ERP_API[ERP系统接口]
+        FINANCE_API[财务系统接口]
+        OA_API[办公自动化接口]
     end
-    
+
     %% 双向集成流
     INTEGRATION_SVC <--> WECHAT_API
     INTEGRATION_SVC <--> DINGTALK_API
     INTEGRATION_SVC <--> SMTP
     INTEGRATION_SVC <--> ERP_API
-    
+
     %% Webhook接收
     WECHAT_WEBHOOK --> INTEGRATION_SVC
     DINGTALK_WEBHOOK --> INTEGRATION_SVC
-    
+
     %% 通知分发
     NOTIFICATION_SVC --> WECHAT_BOT
     NOTIFICATION_SVC --> DINGTALK_BOT
     NOTIFICATION_SVC --> EMAIL_TEMPLATE
-    
+
     %% 工作流触发
     WORKFLOW_SVC --> INTEGRATION_SVC
     INTEGRATION_SVC --> WORKFLOW_SVC
