@@ -1044,103 +1044,48 @@ AI服务层与RAG知识库的设计，为系统注入了智能，实现了方便
 ### 6. 分阶段实施路线图
 
 ```mermaid
-graph TD
-    subgraph "阶段一：核心基础(MVP)"
-        A1[系统架构设计<br/>🏗️ 微服务架构<br/>📋 技术选型<br/>⏱️ 预计1-2周]
-        A2[API网关搭建<br/>🚪 统一入口<br/>🔐 身份验证<br/>⏱️ 预计3-5天]
-        A3[用户认证服务<br/>👤 用户管理<br/>🔑 JWT认证<br/>⏱️ 预计1-2周]
-        A4[客户账户服务<br/>🏢 客户档案<br/>📞 联系人管理<br/>⏱️ 预计1-2周]
-        A5[数据库设计<br/>🗄️ PostgreSQL<br/>📊 数据模型<br/>⏱️ 预计3-5天]
-        A6[基础RBAC权限<br/>🔒 角色管理<br/>⚡ 权限控制<br/>⏱️ 预计1周]
+gantt
+    title 智能CRM系统分阶段实施路线图
 
-        A1 --> A2 --> A3 --> A4 --> A5 --> A6
-    end
+    section 阶段一：核心基础(MVP)
+    系统架构设计           :arch, 1w
+    API网关搭建           :gateway, after arch, 5d
+    用户认证服务          :auth, after gateway, 2w
+    客户账户服务          :customer, after auth, 2w
+    PostgreSQL数据库      :db, after customer, 5d
+    基础RBAC权限         :rbac, after db, 1w
 
-    subgraph "阶段二：协同工作空间"
-        B1[项目机会服务<br/>📈 销售漏斗<br/>🎯 商机管理<br/>⏱️ 预计2-3周]
-        B2[任务管理服务<br/>✅ 任务分配<br/>📅 进度跟踪<br/>⏱️ 预计1-2周]
-        B3[可定制仪表盘<br/>📊 数据可视化<br/>📈 业务指标<br/>⏱️ 预计2-3周]
-        B4[看板视图开发<br/>📋 敏捷看板<br/>🔄 状态流转<br/>⏱️ 预计1周]
+    section 阶段二：协同工作空间
+    项目机会服务          :project, after rbac, 3w
+    任务管理服务          :task, after project, 2w
+    可定制仪表盘          :dashboard, after task, 3w
+    看板视图开发          :kanban, after dashboard, 1w
 
-        B1 --> B2 --> B3 --> B4
-    end
+    section 阶段三：自动化引擎
+    Camunda集成          :workflow, after kanban, 2w
+    BPMN流程建模         :bpmn, after workflow, 2w
+    Saga编排实现         :saga, after bpmn, 3w
+    流程自动化测试        :auto_test, after saga, 1w
 
-    subgraph "阶段三：自动化引擎"
-        C1[Camunda集成<br/>⚙️ 工作流引擎<br/>🔧 流程编排<br/>⏱️ 预计1-2周]
-        C2[BPMN流程建模<br/>📐 流程设计<br/>🎨 可视化建模<br/>⏱️ 预计2周]
-        C3[Saga编排实现<br/>🔄 分布式事务<br/>📦 服务协调<br/>⏱️ 预计2-3周]
-        C4[流程自动化测试<br/>🧪 自动化测试<br/>✅ 质量保证<br/>⏱️ 预计1周]
+    section 阶段四：智能层注入
+    AI服务架构           :ai_arch, after auto_test, 1w
+    RAG知识库构建        :rag, after ai_arch, 3w
+    智能体开发           :agents, after rag, 2w
+    AI功能集成测试       :ai_test, after agents, 2w
 
-        C1 --> C2 --> C3 --> C4
-    end
-
-    subgraph "阶段四：智能层注入"
-        D1[AI服务架构<br/>🤖 AI服务设计<br/>🧠 智能框架<br/>⏱️ 预计1周]
-        D2[RAG知识库构建<br/>📚 知识管理<br/>🔍 语义检索<br/>⏱️ 预计2-3周]
-        D3[智能体开发<br/>🎯 机会评分<br/>📈 销售预测<br/>⏱️ 预计2周]
-        D4[AI功能集成测试<br/>🧪 AI测试<br/>📊 效果评估<br/>⏱️ 预计1-2周]
-
-        D1 --> D2 --> D3 --> D4
-    end
-
-    subgraph "阶段五：生态扩展"
-        E1[集成服务完善<br/>🔗 API集成<br/>🌐 第三方对接<br/>⏱️ 预计1-2周]
-        E2[企业微信集成<br/>💬 微信生态<br/>🤖 机器人通知<br/>⏱️ 预计1周]
-        E3[钉钉集成<br/>📱 钉钉生态<br/>📋 任务同步<br/>⏱️ 预计1周]
-        E4[系统上线部署<br/>🚀 生产部署<br/>📊 监控告警<br/>⏱️ 预计3-5天]
-
-        E1 --> E2 --> E3 --> E4
-    end
-
-    %% 阶段间依赖
-    A6 --> B1
-    B4 --> C1
-    C4 --> D1
-    D4 --> E1
-
-    %% 样式定义
-    classDef phase1 fill:#e3f2fd,stroke:#1976d2,color:#000
-    classDef phase2 fill:#f3e5f5,stroke:#7b1fa2,color:#000
-    classDef phase3 fill:#e8f5e8,stroke:#2e7d32,color:#000
-    classDef phase4 fill:#fff3e0,stroke:#f57c00,color:#000
-    classDef phase5 fill:#ffebee,stroke:#d32f2f,color:#000
-
-    class A1,A2,A3,A4,A5,A6 phase1
-    class B1,B2,B3,B4 phase2
-    class C1,C2,C3,C4 phase3
-    class D1,D2,D3,D4 phase4
-    class E1,E2,E3,E4 phase5
+    section 阶段五：生态扩展
+    集成服务完善          :integration, after ai_test, 2w
+    企业微信集成          :wechat, after integration, 1w
+    钉钉集成             :dingtalk, after wechat, 1w
+    系统上线部署          :deploy, after dingtalk, 5d
 ```
 
-#### 实施策略说明
-
-**阶段划分原则**：
-- **渐进式交付**：每个阶段都有可用的功能产出
-- **风险控制**：先实现核心功能，再扩展高级特性
-- **价值优先**：优先开发对业务价值最大的功能
-- **技术依赖**：合理安排技术组件的开发顺序
-
-**各阶段目标**：
-
-| 阶段 | 核心目标 | 预计周期 | 关键产出 |
-|------|----------|----------|----------|
-| **阶段一** | 搭建系统骨架 | 6-8周 | 可运行的基础系统 |
-| **阶段二** | 实现核心业务 | 6-8周 | 完整的项目管理功能 |
-| **阶段三** | 流程自动化 | 6-8周 | 自动化的业务流程 |
-| **阶段四** | 智能化升级 | 5-7周 | AI辅助决策功能 |
-| **阶段五** | 生态集成 | 3-4周 | 完整的企业级系统 |
-
-**并行开发机会**：
-- 前端开发可与后端API开发并行
-- 数据库设计可与系统架构同步进行
-- AI模型训练可在前期阶段提前开始
-- 第三方集成调研可贯穿整个开发过程
-
-**里程碑检查点**：
-- 每个阶段结束进行功能验收
-- 关键技术风险点提前验证
-- 用户反馈收集和需求调整
-- 性能和安全测试持续进行
+该路线图展示了项目的5个实施阶段：
+- **阶段一：核心基础(MVP)**：系统架构、API网关、认证服务、数据库、基础权限
+- **阶段二：协同工作空间**：项目服务、任务管理、仪表盘、看板视图
+- **阶段三：自动化引擎**：Camunda集成、BPMN建模、Saga编排、自动化测试
+- **阶段四：智能层注入**：AI服务、RAG知识库、智能体开发、AI测试
+- **阶段五：生态扩展**：集成服务、企业微信、钉钉集成、系统部署
 
 ### 7. 技术栈选型
 
