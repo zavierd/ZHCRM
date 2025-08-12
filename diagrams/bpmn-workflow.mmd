@@ -1,0 +1,93 @@
+flowchart TD
+    %% 开始事件
+    START([客户报备])
+    
+    %% 泳道定义
+    subgraph "销售泳道"
+        S1[客户报备]
+        S2[跟进谈单]
+        S3[客户交付确认]
+    end
+    
+    subgraph "销售主管泳道"
+        SM1[立项审批]
+        SM2[会审协调]
+        SM3[团队资源调配]
+    end
+    
+    subgraph "设计师泳道"
+        D1[需求分析]
+        D2[方案设计]
+        D3[方案修改]
+    end
+    
+    subgraph "总经理泳道"
+        GM1{会审决策}
+    end
+    
+    subgraph "订单主管泳道"
+        O1[项目建档]
+        O2[订单管理]
+        O3[内部验收]
+    end
+    
+    subgraph "财务泳道"
+        F1[合同登记]
+        F2[开票回款]
+    end
+    
+    subgraph "安装主管泳道"
+        I1[人员分派]
+        I2[安装调度]
+    end
+    
+    subgraph "工程师泳道"
+        E1[工地交底]
+        E2[现场安装]
+    end
+    
+    subgraph "深化员泳道"
+        DE1[图纸深化]
+        DE2[绘图下单]
+    end
+    
+    %% 流程连接
+    START --> S1
+    S1 --> SM1
+    SM1 --> D1
+    D1 --> D2
+    D2 --> SM2
+    SM2 --> GM1
+    GM1 -->|通过| S2
+    GM1 -->|不通过| D3
+    D3 --> D2
+    S2 -->|赢单| O1
+    S2 -->|输单| END1([流程结束])
+    
+    %% 售后流程
+    O1 --> F1
+    O1 --> I1
+    I1 --> E1
+    E1 --> DE1
+    DE1 --> DE2
+    DE2 --> O2
+    O2 --> I2
+    I2 --> E2
+    E2 --> O3
+    O3 --> S3
+    S3 --> F2
+    F2 --> END2([项目完成])
+    
+    %% 样式
+    classDef startEnd fill:#4caf50,stroke:#2e7d32,color:#fff
+    classDef decision fill:#ff9800,stroke:#f57c00,color:#fff
+    classDef sales fill:#2196f3,stroke:#1976d2,color:#fff
+    classDef design fill:#9c27b0,stroke:#7b1fa2,color:#fff
+    classDef management fill:#f44336,stroke:#d32f2f,color:#fff
+    classDef operation fill:#607d8b,stroke:#455a64,color:#fff
+    
+    class START,END1,END2 startEnd
+    class GM1 decision
+    class S1,S2,S3,SM1,SM2,SM3 sales
+    class D1,D2,D3,DE1,DE2 design
+    class O1,O2,O3,F1,F2,I1,I2,E1,E2 operation

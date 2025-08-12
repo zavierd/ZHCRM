@@ -1,0 +1,161 @@
+graph TB
+    %% 用户层
+    subgraph "用户界面层"
+        WEB[Web前端<br/>React/Vue]
+        MOBILE[移动端App<br/>React Native/Flutter]
+        API_DOCS[API文档<br/>Swagger/OpenAPI]
+    end
+
+    %% API网关
+    GATEWAY[API网关<br/>Kong/Nginx<br/>- 请求路由<br/>- 身份验证<br/>- 速率限制<br/>- 负载均衡]
+
+    %% 核心微服务层
+    subgraph "核心微服务层"
+        AUTH[用户认证服务<br/>- 用户管理<br/>- RBAC权限<br/>- OAuth 2.0<br/>- JWT令牌]
+        
+        CUSTOMER[客户账户服务<br/>- 客户信息<br/>- 公司档案<br/>- 联系人管理<br/>- 客户画像]
+        
+        PROJECT[项目机会服务<br/>- 售前流程<br/>- 售后项目<br/>- 商机管理<br/>- 销售漏斗]
+        
+        TASK[任务管理服务<br/>- 任务分配<br/>- 看板视图<br/>- 进度跟踪<br/>- 协作工具]
+        
+        WORKFLOW[工作流服务<br/>- Camunda BPM<br/>- 流程自动化<br/>- Saga编排<br/>- 业务规则]
+        
+        AI_SERVICE[AI智能服务<br/>- RAG问答<br/>- 智能体<br/>- 预测分析<br/>- NLP处理]
+        
+        INTEGRATION[集成服务<br/>- 第三方API<br/>- Webhook处理<br/>- 数据同步<br/>- 消息转换]
+        
+        NOTIFICATION[通知服务<br/>- 应用内消息<br/>- 邮件推送<br/>- 移动通知<br/>- 实时通信]
+    end
+
+    %% 数据存储层
+    subgraph "数据存储层"
+        POSTGRES[(PostgreSQL<br/>主数据库<br/>- 事务数据<br/>- 用户权限<br/>- 业务实体)]
+        
+        REDIS[(Redis<br/>缓存层<br/>- 会话存储<br/>- 热点数据<br/>- 分布式锁)]
+        
+        VECTOR_DB[(向量数据库<br/>Milvus/Weaviate<br/>- 文档嵌入<br/>- 语义搜索)]
+        
+        FILES[文件存储<br/>MinIO/AWS S3<br/>- 文档管理<br/>- 图片视频<br/>- 备份归档]
+        
+        ELASTIC[Elasticsearch<br/>- 全文搜索<br/>- 日志分析<br/>- 业务指标]
+    end
+
+    %% 外部系统集成
+    subgraph "外部系统集成"
+        WECHAT[企业微信<br/>- 客服对话<br/>- 群组通知<br/>- 审批流程]
+        
+        DINGTALK[钉钉<br/>- 任务同步<br/>- 日程管理<br/>- 视频会议]
+        
+        EMAIL[邮件系统<br/>- SMTP/IMAP<br/>- 邮件营销<br/>- 自动回复]
+        
+        AI_API[AI模型API<br/>- OpenAI GPT<br/>- 本地大模型<br/>- 专业AI服务]
+        
+        ERP[ERP系统<br/>- 财务对接<br/>- 库存管理<br/>- 订单同步]
+    end
+
+    %% 基础设施层
+    subgraph "基础设施层"
+        MQ[消息队列<br/>RabbitMQ/Kafka<br/>- 异步处理<br/>- 事件驱动<br/>- 解耦通信]
+        
+        MONITOR[监控告警<br/>Prometheus/Grafana<br/>- 性能监控<br/>- 业务指标<br/>- 异常告警]
+        
+        LOG[日志系统<br/>ELK Stack<br/>- 集中日志<br/>- 链路追踪<br/>- 审计记录]
+        
+        CONFIG[配置中心<br/>Consul/Nacos<br/>- 动态配置<br/>- 服务发现<br/>- 健康检查]
+    end
+
+    %% 连接关系
+    WEB --> GATEWAY
+    MOBILE --> GATEWAY
+    
+    GATEWAY --> AUTH
+    GATEWAY --> CUSTOMER
+    GATEWAY --> PROJECT
+    GATEWAY --> TASK
+    GATEWAY --> WORKFLOW
+    GATEWAY --> AI_SERVICE
+    GATEWAY --> INTEGRATION
+    GATEWAY --> NOTIFICATION
+
+    %% 服务间通信
+    AUTH -.-> MQ
+    CUSTOMER -.-> MQ
+    PROJECT -.-> MQ
+    TASK -.-> MQ
+    WORKFLOW -.-> MQ
+    AI_SERVICE -.-> MQ
+    INTEGRATION -.-> MQ
+    NOTIFICATION -.-> MQ
+
+    %% 数据库连接
+    AUTH --> POSTGRES
+    CUSTOMER --> POSTGRES
+    PROJECT --> POSTGRES
+    TASK --> POSTGRES
+    WORKFLOW --> POSTGRES
+    
+    AI_SERVICE --> VECTOR_DB
+    AI_SERVICE --> REDIS
+    AI_SERVICE --> ELASTIC
+    
+    PROJECT --> FILES
+    CUSTOMER --> FILES
+    
+    %% 缓存连接
+    AUTH --> REDIS
+    CUSTOMER --> REDIS
+    PROJECT --> REDIS
+
+    %% 外部集成
+    INTEGRATION --> WECHAT
+    INTEGRATION --> DINGTALK
+    INTEGRATION --> EMAIL
+    INTEGRATION --> ERP
+    AI_SERVICE --> AI_API
+
+    %% 基础设施连接
+    GATEWAY --> CONFIG
+    AUTH --> CONFIG
+    CUSTOMER --> CONFIG
+    PROJECT --> CONFIG
+    TASK --> CONFIG
+    WORKFLOW --> CONFIG
+    AI_SERVICE --> CONFIG
+    INTEGRATION --> CONFIG
+    NOTIFICATION --> CONFIG
+
+    %% 监控连接
+    GATEWAY -.-> MONITOR
+    AUTH -.-> MONITOR
+    CUSTOMER -.-> MONITOR
+    PROJECT -.-> MONITOR
+    TASK -.-> MONITOR
+    WORKFLOW -.-> MONITOR
+    AI_SERVICE -.-> MONITOR
+    INTEGRATION -.-> MONITOR
+    NOTIFICATION -.-> MONITOR
+
+    %% 日志连接
+    GATEWAY -.-> LOG
+    AUTH -.-> LOG
+    CUSTOMER -.-> LOG
+    PROJECT -.-> LOG
+    TASK -.-> LOG
+    WORKFLOW -.-> LOG
+    AI_SERVICE -.-> LOG
+    INTEGRATION -.-> LOG
+    NOTIFICATION -.-> LOG
+
+    %% 样式定义
+    classDef userLayer fill:#e1f5fe,stroke:#01579b,color:#000
+    classDef serviceLayer fill:#f3e5f5,stroke:#4a148c,color:#000
+    classDef dataLayer fill:#e8f5e8,stroke:#1b5e20,color:#000
+    classDef externalLayer fill:#fff3e0,stroke:#e65100,color:#000
+    classDef infraLayer fill:#fce4ec,stroke:#880e4f,color:#000
+
+    class WEB,MOBILE,API_DOCS userLayer
+    class AUTH,CUSTOMER,PROJECT,TASK,WORKFLOW,AI_SERVICE,INTEGRATION,NOTIFICATION serviceLayer
+    class POSTGRES,REDIS,VECTOR_DB,FILES,ELASTIC dataLayer
+    class WECHAT,DINGTALK,EMAIL,AI_API,ERP externalLayer
+    class MQ,MONITOR,LOG,CONFIG infraLayer

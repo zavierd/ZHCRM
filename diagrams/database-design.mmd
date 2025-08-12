@@ -1,0 +1,115 @@
+erDiagram
+    USERS {
+        uuid id PK
+        string username
+        string email
+        string password_hash
+        uuid role_id FK
+        timestamp created_at
+        timestamp updated_at
+    }
+    
+    ROLES {
+        uuid id PK
+        string role_name
+        string description
+        json permissions
+        timestamp created_at
+    }
+    
+    ACCOUNTS {
+        uuid id PK
+        string company_name
+        string industry
+        string address
+        string phone
+        uuid owner_id FK
+        timestamp created_at
+        timestamp updated_at
+    }
+    
+    CONTACTS {
+        uuid id PK
+        string first_name
+        string last_name
+        string email
+        string phone
+        uuid account_id FK
+        timestamp created_at
+        timestamp updated_at
+    }
+    
+    PROJECTS {
+        uuid id PK
+        string project_name
+        uuid account_id FK
+        string status
+        decimal value
+        date close_date
+        uuid owner_id FK
+        timestamp created_at
+        timestamp updated_at
+    }
+    
+    TASKS {
+        uuid id PK
+        string title
+        text description
+        date due_date
+        string status
+        string priority
+        uuid assignee_id FK
+        uuid project_id FK
+        timestamp created_at
+        timestamp updated_at
+    }
+    
+    ACTIVITIES {
+        uuid id PK
+        string type
+        string subject
+        text notes
+        uuid related_to_id
+        string related_to_type
+        uuid user_id FK
+        timestamp created_at
+    }
+    
+    DOCUMENTS {
+        uuid id PK
+        string file_name
+        string file_path
+        string file_type
+        integer file_size
+        uuid uploader_id FK
+        uuid project_id FK
+        timestamp created_at
+    }
+    
+    WORKFLOW_INSTANCES {
+        uuid id PK
+        string process_definition_key
+        string business_key
+        string status
+        json variables
+        uuid initiated_by FK
+        timestamp started_at
+        timestamp ended_at
+    }
+    
+    %% 关系定义
+    USERS ||--o{ ACCOUNTS : owns
+    USERS ||--o{ PROJECTS : owns
+    USERS ||--o{ TASKS : assigned_to
+    USERS ||--o{ ACTIVITIES : created_by
+    USERS ||--o{ DOCUMENTS : uploaded_by
+    USERS ||--o{ WORKFLOW_INSTANCES : initiated_by
+    USERS }o--|| ROLES : has_role
+    
+    ACCOUNTS ||--o{ CONTACTS : has_contacts
+    ACCOUNTS ||--o{ PROJECTS : has_projects
+    
+    PROJECTS ||--o{ TASKS : contains_tasks
+    PROJECTS ||--o{ DOCUMENTS : has_documents
+    
+    CONTACTS }o--o{ PROJECTS : involved_in

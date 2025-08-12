@@ -1,0 +1,36 @@
+gantt
+    title 智能CRM系统分阶段实施路线图
+    dateFormat  YYYY-MM-DD
+    axisFormat  %m月%d日
+    
+    section 阶段一：核心基础(MVP)
+    系统架构设计           :done, arch, 2024-01-01, 7d
+    API网关搭建           :done, gateway, after arch, 5d
+    用户认证服务          :done, auth, after gateway, 10d
+    客户账户服务          :done, customer, after auth, 10d
+    PostgreSQL数据库      :done, db, after customer, 5d
+    基础RBAC权限         :done, rbac, after db, 8d
+    
+    section 阶段二：协同工作空间
+    项目机会服务          :active, project, after rbac, 12d
+    任务管理服务          :task, after project, 10d
+    可定制仪表盘          :dashboard, after task, 15d
+    看板视图开发          :kanban, after dashboard, 8d
+    
+    section 阶段三：自动化引擎
+    Camunda集成          :workflow, after kanban, 10d
+    BPMN流程建模         :bpmn, after workflow, 12d
+    Saga编排实现         :saga, after bpmn, 15d
+    流程自动化测试        :auto_test, after saga, 8d
+    
+    section 阶段四：智能层注入
+    AI服务架构           :ai_arch, after auto_test, 8d
+    RAG知识库构建        :rag, after ai_arch, 15d
+    智能体开发           :agents, after rag, 12d
+    AI功能集成测试       :ai_test, after agents, 10d
+    
+    section 阶段五：生态扩展
+    集成服务完善          :integration, after ai_test, 10d
+    企业微信集成          :wechat, after integration, 8d
+    钉钉集成             :dingtalk, after wechat, 8d
+    系统上线部署          :deploy, after dingtalk, 5d
