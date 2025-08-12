@@ -600,40 +600,41 @@ graph TB
 
 ```mermaid
 gantt
-    title CRM System Implementation Roadmap
+    title 智能CRM系统分阶段实施路线图
     dateFormat YYYY-MM-DD
+    axisFormat %d
 
-    section Phase 1 Core Foundation
-    System Architecture    :arch, 2024-01-01, 1w
-    API Gateway           :gateway, after arch, 5d
-    User Authentication   :auth, after gateway, 2w
-    Customer Service      :customer, after auth, 2w
-    PostgreSQL Database   :db, after customer, 5d
-    Basic RBAC           :rbac, after db, 1w
+    section 阶段一：核心基础(MVP)
+    系统架构设计    :arch, 2024-01-01, 7d
+    API网关搭建    :gateway, after arch, 5d
+    用户认证服务    :auth, after gateway, 10d
+    客户账户服务    :customer, after auth, 10d
+    数据库设计     :db, after customer, 5d
+    基础权限控制    :rbac, after db, 7d
 
-    section Phase 2 Collaboration
-    Project Service       :project, after rbac, 3w
-    Task Management      :task, after project, 2w
-    Dashboard           :dashboard, after task, 3w
-    Kanban View         :kanban, after dashboard, 1w
+    section 阶段二：协同工作空间
+    项目机会服务    :project, after rbac, 15d
+    任务管理服务    :task, after project, 10d
+    可定制仪表盘    :dashboard, after task, 15d
+    看板视图开发    :kanban, after dashboard, 7d
 
-    section Phase 3 Automation
-    Camunda Integration  :workflow, after kanban, 2w
-    BPMN Modeling       :bpmn, after workflow, 2w
-    Saga Implementation :saga, after bpmn, 3w
-    Automation Testing  :auto_test, after saga, 1w
+    section 阶段三：自动化引擎
+    Camunda集成   :workflow, after kanban, 10d
+    BPMN流程建模  :bpmn, after workflow, 10d
+    Saga编排实现  :saga, after bpmn, 15d
+    自动化测试    :auto_test, after saga, 7d
 
-    section Phase 4 AI Intelligence
-    AI Service Architecture :ai_arch, after auto_test, 1w
-    RAG Knowledge Base     :rag, after ai_arch, 3w
-    AI Agents Development  :agents, after rag, 2w
-    AI Integration Testing :ai_test, after agents, 2w
+    section 阶段四：智能层注入
+    AI服务架构    :ai_arch, after auto_test, 7d
+    RAG知识库构建 :rag, after ai_arch, 15d
+    智能体开发    :agents, after rag, 10d
+    AI功能测试    :ai_test, after agents, 10d
 
-    section Phase 5 Ecosystem
-    Integration Service    :integration, after ai_test, 2w
-    WeChat Integration    :wechat, after integration, 1w
-    DingTalk Integration  :dingtalk, after wechat, 1w
-    System Deployment     :deploy, after dingtalk, 5d
+    section 阶段五：生态扩展
+    集成服务完善    :integration, after ai_test, 10d
+    企业微信集成    :wechat, after integration, 7d
+    钉钉集成       :dingtalk, after wechat, 7d
+    系统上线部署    :deploy, after dingtalk, 5d
 ```
 
 ### 实施策略
