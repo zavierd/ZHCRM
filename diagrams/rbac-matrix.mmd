@@ -15,71 +15,61 @@ graph TB
         USER --> ADMIN
     end
 
-    %% 系统资源
-    subgraph resources ["系统资源"]
-        PROJECT_CREATE[项目创建]
-        PROJECT_VIEW[项目查看]
-        PROJECT_EDIT[项目编辑]
-        PROJECT_DELETE[项目删除]
-        CUSTOMER_MGMT[客户管理]
-        QUOTE_EDIT[报价管理]
-        FILE_UPLOAD[文件上传]
-        REPORT_EXPORT[报表导出]
+    %% 核心权限资源
+    subgraph resources ["核心权限资源"]
+        PROJECT[项目管理]
+        CUSTOMER[客户管理]
+        QUOTE[报价管理]
+        FILE[文件管理]
+        REPORT[报表管理]
     end
 
-    %% 权限矩阵
-    subgraph permissions ["权限矩阵"]
-        PERM_MATRIX["
-        销售: ✅创建 ✅查看自己 ✅编辑 ❌删除 ✅客户 ✅报价 🟡文件 ❌报表
-        销售主管: ✅创建 ✅查看团队 ✅编辑 🟡删除 ✅客户 ✅报价 ✅文件 ✅报表
-        设计师: ❌创建 ✅查看相关 🟡编辑方案 ❌删除 🟡客户只读 ❌报价 ✅文件 ❌报表
-        财务: ❌创建 ✅查看相关 🟡编辑价格 ❌删除 🟡客户只读 🟡报价审核 ❌文件 ✅报表
-        系统管理员: ✅全部权限
-
-        图例: ✅允许 ❌拒绝 🟡条件允许
-        "]
+    %% 权限级别说明
+    subgraph legend ["权限级别"]
+        FULL[完全权限]
+        LIMITED[受限权限]
+        READONLY[只读权限]
+        DENIED[无权限]
     end
 
-    %% Sales Permissions
-    SALES -.-> PROJECT_CREATE
-    SALES -.-> PROJECT_VIEW
-    SALES -.-> PROJECT_EDIT
-    SALES -.-> CUSTOMER_MGMT
-    SALES -.-> QUOTE_EDIT
+    %% 销售权限连接
+    SALES --> PROJECT
+    SALES --> CUSTOMER
+    SALES --> QUOTE
+    SALES -.-> FILE
 
-    %% Sales Manager Permissions (Inherits + Extended)
-    SALES_MGR -.-> PROJECT_DELETE
-    SALES_MGR -.-> FILE_UPLOAD
-    SALES_MGR -.-> REPORT_EXPORT
+    %% 销售主管权限（继承+扩展）
+    SALES_MGR --> PROJECT
+    SALES_MGR --> CUSTOMER
+    SALES_MGR --> QUOTE
+    SALES_MGR --> FILE
+    SALES_MGR --> REPORT
 
-    %% Designer Permissions
-    DESIGNER -.-> PROJECT_VIEW
-    DESIGNER -.-> PROJECT_EDIT
-    DESIGNER -.-> FILE_UPLOAD
+    %% 设计师权限
+    DESIGNER -.-> PROJECT
+    DESIGNER -.-> CUSTOMER
+    DESIGNER --> FILE
 
-    %% Finance Permissions
-    FINANCE -.-> PROJECT_VIEW
-    FINANCE -.-> PROJECT_EDIT
-    FINANCE -.-> QUOTE_EDIT
-    FINANCE -.-> REPORT_EXPORT
+    %% 财务权限
+    FINANCE -.-> PROJECT
+    FINANCE -.-> CUSTOMER
+    FINANCE -.-> QUOTE
+    FINANCE --> REPORT
 
-    %% Admin Permissions (All)
-    ADMIN -.-> PROJECT_CREATE
-    ADMIN -.-> PROJECT_VIEW
-    ADMIN -.-> PROJECT_EDIT
-    ADMIN -.-> PROJECT_DELETE
-    ADMIN -.-> CUSTOMER_MGMT
-    ADMIN -.-> QUOTE_EDIT
-    ADMIN -.-> FILE_UPLOAD
-    ADMIN -.-> REPORT_EXPORT
+    %% 系统管理员权限（全部）
+    ADMIN --> PROJECT
+    ADMIN --> CUSTOMER
+    ADMIN --> QUOTE
+    ADMIN --> FILE
+    ADMIN --> REPORT
 
-    %% Styling
+    %% 样式定义
     classDef roleNode fill:#e3f2fd,stroke:#1976d2,color:#000
     classDef resourceNode fill:#f3e5f5,stroke:#7b1fa2,color:#000
     classDef adminNode fill:#ffebee,stroke:#d32f2f,color:#000
-    classDef matrixNode fill:#fff3e0,stroke:#f57c00,color:#000
+    classDef legendNode fill:#fff3e0,stroke:#f57c00,color:#000
 
     class USER,SALES,SALES_MGR,DESIGNER,FINANCE roleNode
-    class PROJECT_CREATE,PROJECT_VIEW,PROJECT_EDIT,PROJECT_DELETE,CUSTOMER_MGMT,QUOTE_EDIT,FILE_UPLOAD,REPORT_EXPORT resourceNode
+    class PROJECT,CUSTOMER,QUOTE,FILE,REPORT resourceNode
     class ADMIN adminNode
-    class PERM_MATRIX matrixNode
+    class FULL,LIMITED,READONLY,DENIED legendNode
