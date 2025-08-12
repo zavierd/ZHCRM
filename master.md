@@ -489,7 +489,7 @@ graph TB
     end
 
     subgraph "生成服务"
-        LLM[大语言模型<br/>GPT-4/本地模型]
+        LLM[大语言模型<br/>GPT-5/本地模型]
         PROMPT[提示工程]
         ANSWER[答案生成]
         CITE[引用标注]
@@ -875,7 +875,7 @@ BPMN模型是可执行的文档，这是该方法论带来的最大变革。业�
 
 为了确保AI能力的灵活性和可维护性，我们不应将AI逻辑散布在各个业务服务中。
 
-AI即服务（AI as a Service）层：建议设立一个专门的AI服务微服务。该服务将作为所有AI功能的统一网关和抽象层。系统的其他部分（如工作流引擎、前端应用）只与AI服务交互，而不直接调用外部的AI供应商API。这种设计带来了巨大的好处：未来如果需要更换AI模型（例如，从OpenAI的GPT-4切换到一个开源的本地化模型），只需修改AI服务内部的实现，而无需触动系统的任何其他部分。
+AI即服务（AI as a Service）层：建议设立一个专门的AI服务微服务。该服务将作为所有AI功能的统一网关和抽象层。系统的其他部分（如工作流引擎、前端应用）只与AI服务交互，而不直接调用外部的AI供应商API。这种设计带来了巨大的好处：未来如果需要更换AI模型（例如，从OpenAI的GPT-5切换到一个开源的本地化模型），只需修改AI服务内部的实现，而无需触动系统的任何其他部分。
 
 内部API设计：AI服务将向内部暴露一组定义清晰的API，例如/generate-summary（生成摘要）、/answer-question（问答）、/score-lead（线索评分）。工作流引擎可以通过服务任务调用这些API，来将AI能力无缝嵌入到业务流程中。
 
@@ -1116,7 +1116,7 @@ mindmap
         Apache Kafka 流处理平台
     AI技术栈
       大语言模型
-        OpenAI GPT-4
+        OpenAI GPT-5
         本地部署模型
         通义千问 Qwen
         智谱 ChatGLM
@@ -1146,7 +1146,7 @@ mindmap
 该思维导图展示了智能CRM系统的完整技术选型：
 - **前端技术**：React 18、TypeScript、Ant Design、Redux Toolkit、React Native、Flutter
 - **后端技术**：Spring Boot、Spring Cloud Gateway、Spring Security、PostgreSQL、Redis、Elasticsearch
-- **AI技术栈**：OpenAI GPT-4、本地模型、Milvus、Weaviate、multilingual-e5-large
+- **AI技术栈**：OpenAI GPT-5、本地模型、Milvus、Weaviate、multilingual-e5-large
 - **工作流引擎**：Camunda Platform 8、BPMN 2.0、DMN决策表
 - **基础设施**：Docker、Kubernetes、Prometheus、Grafana、ELK Stack、Consul、Nacos
 
