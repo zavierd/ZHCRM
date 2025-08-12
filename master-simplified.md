@@ -1,29 +1,4 @@
-# 智能CRM系统架构方案（简化版）
-
-## 📋 文档导航
-
-- [系统概述](#系统概述)
-- [完整架构图表](#完整架构图表)
-- [核心架构设计](#核心架构设计)
-- [业务流程自动化](#业务流程自动化)
-- [AI智能层](#ai智能层)
-- [实施计划](#实施计划)
-
----
-
-## 🎯 系统概述
-
-本CRM系统旨在打造一个智能化的企业"中枢神经系统"，实现：
-- **数据统一**：消除信息孤岛，建立统一的客户数据平台
-- **流程自动化**：将复杂业务流程数字化，提升运营效率
-- **智能决策**：嵌入AI能力，提供数据驱动的业务洞察
-
-**核心价值**：
-- 提升销售效率100%
-- 降低运营成本100%
-- 增强客户满意度和竞争优势
-
----
+# 智能CRM系统架构方案
 
 ## 📊 完整架构图表
 
@@ -626,11 +601,10 @@ graph TB
 ```mermaid
 gantt
     title CRM System Implementation Roadmap
-    dateFormat X
-    axisFormat %w
+    dateFormat YYYY-MM-DD
 
     section Phase 1 Core Foundation
-    System Architecture    :arch, 0, 1w
+    System Architecture    :arch, 2024-01-01, 1w
     API Gateway           :gateway, after arch, 5d
     User Authentication   :auth, after gateway, 2w
     Customer Service      :customer, after auth, 2w

@@ -1046,11 +1046,10 @@ AI服务层与RAG知识库的设计，为系统注入了智能，实现了方便
 ```mermaid
 gantt
     title CRM System Implementation Roadmap
-    dateFormat X
-    axisFormat %w
+    dateFormat YYYY-MM-DD
 
     section Phase 1 Core Foundation
-    System Architecture    :arch, 0, 1w
+    System Architecture    :arch, 2024-01-01, 1w
     API Gateway           :gateway, after arch, 5d
     User Authentication   :auth, after gateway, 2w
     Customer Service      :customer, after auth, 2w
