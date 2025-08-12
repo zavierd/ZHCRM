@@ -287,93 +287,181 @@ flowchart TD
 - **关键决策点**：总经理会审决策、赢单/输单判断
 - **角色职责**：每个泳道明确对应具体的业务角色和职责范围
 
-### 3. RBAC权限矩阵
+### 3. RBAC权限控制体系
+
+#### 3.1 角色继承关系图
+
+```mermaid
+graph TD
+    subgraph "角色继承体系"
+        BASE[基础用户]
+
+        SALES[销售人员<br/>🎯 客户开发<br/>📋 项目跟进<br/>💰 报价管理]
+        SALES_MGR[销售主管<br/>👥 团队管理<br/>📊 销售分析<br/>🎯 目标制定]
+
+        DESIGNER[设计师<br/>📐 方案设计<br/>📄 图纸深化<br/>🎨 创意输出]
+
+        FINANCE[财务人员<br/>💳 合同管理<br/>📈 财务分析<br/>💰 回款跟踪]
+
+        ADMIN[系统管理员<br/>⚙️ 系统配置<br/>👤 用户管理<br/>🔒 权限控制]
+
+        BASE --> SALES
+        SALES --> SALES_MGR
+        BASE --> DESIGNER
+        BASE --> FINANCE
+        BASE --> ADMIN
+    end
+
+    %% 样式定义
+    classDef baseRole fill:#f5f5f5,stroke:#666,color:#333
+    classDef salesRole fill:#e3f2fd,stroke:#1976d2,color:#000
+    classDef designRole fill:#f3e5f5,stroke:#7b1fa2,color:#000
+    classDef financeRole fill:#e8f5e8,stroke:#2e7d32,color:#000
+    classDef adminRole fill:#ffebee,stroke:#d32f2f,color:#000
+
+    class BASE baseRole
+    class SALES,SALES_MGR salesRole
+    class DESIGNER designRole
+    class FINANCE financeRole
+    class ADMIN adminRole
+```
+
+#### 3.2 详细权限矩阵
+
+```mermaid
+graph LR
+    subgraph "业务模块权限分配"
+        subgraph "客户管理"
+            C1[查看客户信息]
+            C2[创建客户档案]
+            C3[编辑客户信息]
+            C4[删除客户记录]
+            C5[客户数据导出]
+        end
+
+        subgraph "项目管理"
+            P1[查看项目列表]
+            P2[创建新项目]
+            P3[编辑项目信息]
+            P4[删除项目]
+            P5[项目状态变更]
+            P6[项目数据分析]
+        end
+
+        subgraph "报价管理"
+            Q1[查看报价单]
+            Q2[创建报价单]
+            Q3[编辑报价内容]
+            Q4[审批报价单]
+            Q5[报价历史查询]
+        end
+
+        subgraph "文件管理"
+            F1[查看文件]
+            F2[上传文件]
+            F3[下载文件]
+            F4[删除文件]
+            F5[文件版本管理]
+        end
+
+        subgraph "报表分析"
+            R1[查看基础报表]
+            R2[查看高级报表]
+            R3[自定义报表]
+            R4[数据导出]
+            R5[报表分享]
+        end
+    end
+```
+
+#### 3.3 权限级别说明
+
+| 权限级别 | 图标 | 说明 | 适用场景 |
+|----------|------|------|----------|
+| **完全权限** | ✅ | 可以执行所有操作（增删改查） | 数据负责人、管理者 |
+| **编辑权限** | ✏️ | 可以查看和修改，但不能删除 | 日常操作人员 |
+| **只读权限** | 👁️ | 只能查看，不能修改 | 相关协作人员 |
+| **条件权限** | 🔒 | 在特定条件下才能操作 | 需要审批的操作 |
+| **无权限** | ❌ | 完全无法访问 | 无关人员 |
+
+#### 3.4 角色权限详细矩阵
+
+| 功能模块 | 具体权限 | 销售 | 销售主管 | 设计师 | 财务 | 系统管理员 |
+|----------|----------|------|----------|--------|------|------------|
+| **客户管理** | 查看客户信息 | ✅ | ✅ | 👁️ | 👁️ | ✅ |
+| | 创建客户档案 | ✅ | ✅ | ❌ | ❌ | ✅ |
+| | 编辑客户信息 | ✅ | ✅ | ❌ | ❌ | ✅ |
+| | 删除客户记录 | ❌ | 🔒 | ❌ | ❌ | ✅ |
+| | 客户数据导出 | 👁️ | ✅ | ❌ | 👁️ | ✅ |
+| **项目管理** | 查看项目列表 | ✅ | ✅ | 👁️ | 👁️ | ✅ |
+| | 创建新项目 | ✅ | ✅ | ❌ | ❌ | ✅ |
+| | 编辑项目信息 | ✅ | ✅ | ✏️ | ❌ | ✅ |
+| | 删除项目 | ❌ | 🔒 | ❌ | ❌ | ✅ |
+| | 项目状态变更 | ✏️ | ✅ | ✏️ | ❌ | ✅ |
+| | 项目数据分析 | 👁️ | ✅ | ❌ | 👁️ | ✅ |
+| **报价管理** | 查看报价单 | ✅ | ✅ | 👁️ | ✅ | ✅ |
+| | 创建报价单 | ✅ | ✅ | ❌ | ❌ | ✅ |
+| | 编辑报价内容 | ✅ | ✅ | ❌ | ✏️ | ✅ |
+| | 审批报价单 | ❌ | ✅ | ❌ | 🔒 | ✅ |
+| | 报价历史查询 | ✅ | ✅ | ❌ | ✅ | ✅ |
+| **文件管理** | 查看文件 | ✅ | ✅ | ✅ | 👁️ | ✅ |
+| | 上传文件 | ✏️ | ✅ | ✅ | ✏️ | ✅ |
+| | 下载文件 | ✅ | ✅ | ✅ | 👁️ | ✅ |
+| | 删除文件 | ❌ | ✏️ | ✏️ | ❌ | ✅ |
+| | 文件版本管理 | ❌ | ✏️ | ✅ | ❌ | ✅ |
+| **报表分析** | 查看基础报表 | ✅ | ✅ | ❌ | ✅ | ✅ |
+| | 查看高级报表 | ❌ | ✅ | ❌ | ✅ | ✅ |
+| | 自定义报表 | ❌ | ✏️ | ❌ | ✏️ | ✅ |
+| | 数据导出 | ❌ | ✅ | ❌ | ✅ | ✅ |
+| | 报表分享 | ❌ | ✅ | ❌ | ✏️ | ✅ |
+
+#### 3.5 数据权限范围
 
 ```mermaid
 graph TB
-    %% 角色继承关系
-    subgraph roles ["角色继承体系"]
-        USER[普通用户]
-        SALES[销售]
-        SALES_MGR[销售主管]
-        DESIGNER[设计师]
-        FINANCE[财务]
-        ADMIN[系统管理员]
+    subgraph "数据访问范围控制"
+        subgraph "销售人员"
+            S_DATA[只能访问自己负责的客户和项目]
+        end
 
-        USER --> SALES
-        SALES --> SALES_MGR
-        USER --> DESIGNER
-        USER --> FINANCE
-        USER --> ADMIN
+        subgraph "销售主管"
+            SM_DATA[可以访问团队所有客户和项目<br/>+ 跨团队数据查看权限]
+        end
+
+        subgraph "设计师"
+            D_DATA[只能访问分配给自己的项目<br/>+ 相关的设计文件和图纸]
+        end
+
+        subgraph "财务人员"
+            F_DATA[可以访问所有项目的财务信息<br/>+ 合同和回款数据]
+        end
+
+        subgraph "系统管理员"
+            A_DATA[可以访问所有数据<br/>+ 系统配置和日志]
+        end
     end
-
-    %% 核心权限资源
-    subgraph resources ["核心权限资源"]
-        PROJECT[项目管理]
-        CUSTOMER[客户管理]
-        QUOTE[报价管理]
-        FILE[文件管理]
-        REPORT[报表管理]
-    end
-
-    %% 权限级别说明
-    subgraph legend ["权限级别"]
-        FULL[完全权限]
-        LIMITED[受限权限]
-        READONLY[只读权限]
-        DENIED[无权限]
-    end
-
-    %% 销售权限连接
-    SALES --> PROJECT
-    SALES --> CUSTOMER
-    SALES --> QUOTE
-    SALES -.-> FILE
-
-    %% 销售主管权限（继承+扩展）
-    SALES_MGR --> PROJECT
-    SALES_MGR --> CUSTOMER
-    SALES_MGR --> QUOTE
-    SALES_MGR --> FILE
-    SALES_MGR --> REPORT
-
-    %% 设计师权限
-    DESIGNER -.-> PROJECT
-    DESIGNER -.-> CUSTOMER
-    DESIGNER --> FILE
-
-    %% 财务权限
-    FINANCE -.-> PROJECT
-    FINANCE -.-> CUSTOMER
-    FINANCE -.-> QUOTE
-    FINANCE --> REPORT
-
-    %% 系统管理员权限（全部）
-    ADMIN --> PROJECT
-    ADMIN --> CUSTOMER
-    ADMIN --> QUOTE
-    ADMIN --> FILE
-    ADMIN --> REPORT
-
-    %% 样式定义
-    classDef roleNode fill:#e3f2fd,stroke:#1976d2,color:#000
-    classDef resourceNode fill:#f3e5f5,stroke:#7b1fa2,color:#000
-    classDef adminNode fill:#ffebee,stroke:#d32f2f,color:#000
-    classDef legendNode fill:#fff3e0,stroke:#f57c00,color:#000
-
-    class USER,SALES,SALES_MGR,DESIGNER,FINANCE roleNode
-    class PROJECT,CUSTOMER,QUOTE,FILE,REPORT resourceNode
-    class ADMIN adminNode
-    class FULL,LIMITED,READONLY,DENIED legendNode
 ```
 
-该权限矩阵展示了基于角色的访问控制体系：
-- **角色继承关系**：销售主管继承销售的所有权限并扩展管理权限
-- **权限级别**：实线=完全权限、虚线=受限权限
-- **精细化控制**：针对不同资源和操作的细粒度权限设计
-- **业务对齐**：权限设计与实际业务角色和职责完全对应
+#### 3.6 权限控制实现机制
 
-> 详细的权限矩阵表格请参考：[RBAC权限详细说明](./diagrams/rbac-permissions-table.md)
+**技术实现要点**：
+- **基于Spring Security + JWT**：实现无状态的权限验证
+- **细粒度权限控制**：方法级别的权限注解 `@PreAuthorize`
+- **数据权限过滤**：基于用户角色自动过滤查询结果
+- **动态权限加载**：支持运行时权限配置变更
+- **审计日志**：记录所有权限相关的操作行为
+
+**权限验证流程**：
+1. 用户登录 → JWT Token生成（包含角色信息）
+2. 请求接口 → Token解析 → 角色权限验证
+3. 数据查询 → 基于角色的数据过滤
+4. 操作执行 → 权限检查 → 审计日志记录
+
+该RBAC权限体系确保了：
+- **安全性**：严格的权限控制，防止越权操作
+- **灵活性**：支持角色继承和权限组合
+- **可扩展性**：易于添加新角色和权限
+- **业务对齐**：权限设计完全符合实际业务需求
 
 ### 4. RAG智能层架构
 
