@@ -604,7 +604,7 @@ gantt
     dateFormat YYYY-MM-DD
     axisFormat %d
 
-    section 阶段一 核心基础
+    section 第一阶段
     架构设计    :arch, 2024-01-01, 7d
     API网关     :gateway, after arch, 5d
     用户认证    :auth, after gateway, 10d
@@ -612,25 +612,25 @@ gantt
     数据库      :db, after customer, 5d
     权限控制    :rbac, after db, 7d
 
-    section 阶段二 协同工作
+    section 第二阶段
     项目服务    :project, after rbac, 15d
     任务管理    :task, after project, 10d
     仪表盘      :dashboard, after task, 15d
     看板视图    :kanban, after dashboard, 7d
 
-    section 阶段三 自动化
+    section 第三阶段
     工作流集成   :workflow, after kanban, 10d
     流程建模    :bpmn, after workflow, 10d
     事务编排    :saga, after bpmn, 15d
     自动测试    :auto_test, after saga, 7d
 
-    section 阶段四 智能化
+    section 第四阶段
     AI架构      :ai_arch, after auto_test, 7d
     知识库      :rag, after ai_arch, 15d
     智能体      :agents, after rag, 10d
     AI测试      :ai_test, after agents, 10d
 
-    section 阶段五 生态集成
+    section 第五阶段
     集成服务    :integration, after ai_test, 10d
     微信集成    :wechat, after integration, 7d
     钉钉集成    :dingtalk, after wechat, 7d
