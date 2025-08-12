@@ -1,12 +1,12 @@
 graph TB
-    %% 角色继承关系
-    subgraph "角色继承体系"
-        USER[普通用户]
-        SALES[销售]
-        SALES_MGR[销售主管]
-        DESIGNER[设计师]
-        FINANCE[财务]
-        ADMIN[系统管理员]
+    %% Role Inheritance
+    subgraph roles ["Role Hierarchy"]
+        USER[User]
+        SALES[Sales]
+        SALES_MGR[Sales Manager]
+        DESIGNER[Designer]
+        FINANCE[Finance]
+        ADMIN[System Admin]
 
         USER --> SALES
         SALES --> SALES_MGR
@@ -15,69 +15,71 @@ graph TB
         USER --> ADMIN
     end
 
-    %% 权限资源
-    subgraph "系统资源"
-        PROJECT_CREATE[项目创建]
-        PROJECT_VIEW[项目查看]
-        PROJECT_EDIT[项目编辑]
-        PROJECT_DELETE[项目删除]
-        CUSTOMER_MGMT[客户管理]
-        QUOTE_EDIT[报价修改]
-        FILE_UPLOAD[文件上传]
-        REPORT_EXPORT[报表导出]
+    %% System Resources
+    subgraph resources ["System Resources"]
+        PROJECT_CREATE[Create Project]
+        PROJECT_VIEW[View Project]
+        PROJECT_EDIT[Edit Project]
+        PROJECT_DELETE[Delete Project]
+        CUSTOMER_MGMT[Customer Management]
+        QUOTE_EDIT[Quote Management]
+        FILE_UPLOAD[File Upload]
+        REPORT_EXPORT[Export Reports]
     end
 
-    %% 销售权限
-    SALES -.->|允许| PROJECT_CREATE
-    SALES -.->|允许(自己)| PROJECT_VIEW
-    SALES -.->|允许| PROJECT_EDIT
-    SALES -.->|拒绝| PROJECT_DELETE
-    SALES -.->|允许| CUSTOMER_MGMT
-    SALES -.->|允许| QUOTE_EDIT
-    SALES -.->|限制| FILE_UPLOAD
-    SALES -.->|拒绝| REPORT_EXPORT
+    %% Permission Matrix
+    subgraph permissions ["Permission Matrix"]
+        PERM_MATRIX["
+        Sales: ✅Create ✅View(Own) ✅Edit ❌Delete ✅Customer ✅Quote 🟡File ❌Report
+        Sales Mgr: ✅Create ✅View(Team) ✅Edit 🟡Delete ✅Customer ✅Quote ✅File ✅Report
+        Designer: ❌Create ✅View(Related) 🟡Edit(Design) ❌Delete 🟡Customer(Read) ❌Quote ✅File ❌Report
+        Finance: ❌Create ✅View(Related) 🟡Edit(Price) ❌Delete 🟡Customer(Read) 🟡Quote(Review) ❌File ✅Report
+        Admin: ✅All Permissions
 
-    %% 销售主管权限(继承销售+扩展)
-    SALES_MGR -.->|允许(团队)| PROJECT_VIEW
-    SALES_MGR -.->|审批| PROJECT_DELETE
-    SALES_MGR -.->|允许| FILE_UPLOAD
-    SALES_MGR -.->|允许| REPORT_EXPORT
+        Legend: ✅Allow ❌Deny 🟡Conditional
+        "]
+    end
 
-    %% 设计师权限
-    DESIGNER -.->|拒绝| PROJECT_CREATE
-    DESIGNER -.->|允许(相关)| PROJECT_VIEW
-    DESIGNER -.->|方案| PROJECT_EDIT
-    DESIGNER -.->|拒绝| PROJECT_DELETE
-    DESIGNER -.->|只读| CUSTOMER_MGMT
-    DESIGNER -.->|拒绝| QUOTE_EDIT
-    DESIGNER -.->|允许| FILE_UPLOAD
-    DESIGNER -.->|拒绝| REPORT_EXPORT
+    %% Sales Permissions
+    SALES -.-> PROJECT_CREATE
+    SALES -.-> PROJECT_VIEW
+    SALES -.-> PROJECT_EDIT
+    SALES -.-> CUSTOMER_MGMT
+    SALES -.-> QUOTE_EDIT
 
-    %% 财务权限
-    FINANCE -.->|拒绝| PROJECT_CREATE
-    FINANCE -.->|允许(相关)| PROJECT_VIEW
-    FINANCE -.->|价格| PROJECT_EDIT
-    FINANCE -.->|拒绝| PROJECT_DELETE
-    FINANCE -.->|只读| CUSTOMER_MGMT
-    FINANCE -.->|审核| QUOTE_EDIT
-    FINANCE -.->|拒绝| FILE_UPLOAD
-    FINANCE -.->|允许| REPORT_EXPORT
+    %% Sales Manager Permissions (Inherits + Extended)
+    SALES_MGR -.-> PROJECT_DELETE
+    SALES_MGR -.-> FILE_UPLOAD
+    SALES_MGR -.-> REPORT_EXPORT
 
-    %% 系统管理员权限(全部允许)
-    ADMIN -.->|允许| PROJECT_CREATE
-    ADMIN -.->|允许| PROJECT_VIEW
-    ADMIN -.->|允许| PROJECT_EDIT
-    ADMIN -.->|允许| PROJECT_DELETE
-    ADMIN -.->|允许| CUSTOMER_MGMT
-    ADMIN -.->|允许| QUOTE_EDIT
-    ADMIN -.->|允许| FILE_UPLOAD
-    ADMIN -.->|允许| REPORT_EXPORT
+    %% Designer Permissions
+    DESIGNER -.-> PROJECT_VIEW
+    DESIGNER -.-> PROJECT_EDIT
+    DESIGNER -.-> FILE_UPLOAD
 
-    %% 样式定义
+    %% Finance Permissions
+    FINANCE -.-> PROJECT_VIEW
+    FINANCE -.-> PROJECT_EDIT
+    FINANCE -.-> QUOTE_EDIT
+    FINANCE -.-> REPORT_EXPORT
+
+    %% Admin Permissions (All)
+    ADMIN -.-> PROJECT_CREATE
+    ADMIN -.-> PROJECT_VIEW
+    ADMIN -.-> PROJECT_EDIT
+    ADMIN -.-> PROJECT_DELETE
+    ADMIN -.-> CUSTOMER_MGMT
+    ADMIN -.-> QUOTE_EDIT
+    ADMIN -.-> FILE_UPLOAD
+    ADMIN -.-> REPORT_EXPORT
+
+    %% Styling
     classDef roleNode fill:#e3f2fd,stroke:#1976d2,color:#000
     classDef resourceNode fill:#f3e5f5,stroke:#7b1fa2,color:#000
     classDef adminNode fill:#ffebee,stroke:#d32f2f,color:#000
+    classDef matrixNode fill:#fff3e0,stroke:#f57c00,color:#000
 
     class USER,SALES,SALES_MGR,DESIGNER,FINANCE roleNode
     class PROJECT_CREATE,PROJECT_VIEW,PROJECT_EDIT,PROJECT_DELETE,CUSTOMER_MGMT,QUOTE_EDIT,FILE_UPLOAD,REPORT_EXPORT resourceNode
     class ADMIN adminNode
+    class PERM_MATRIX matrixNode
