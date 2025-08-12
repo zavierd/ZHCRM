@@ -1049,37 +1049,37 @@ gantt
     dateFormat YYYY-MM-DD
     axisFormat %d
 
-    section 阶段一：核心基础(MVP)
-    系统架构设计    :arch, 2024-01-01, 7d
-    API网关搭建    :gateway, after arch, 5d
-    用户认证服务    :auth, after gateway, 10d
-    客户账户服务    :customer, after auth, 10d
-    数据库设计     :db, after customer, 5d
-    基础权限控制    :rbac, after db, 7d
+    section 阶段一 核心基础
+    架构设计    :arch, 2024-01-01, 7d
+    API网关     :gateway, after arch, 5d
+    用户认证    :auth, after gateway, 10d
+    客户服务    :customer, after auth, 10d
+    数据库      :db, after customer, 5d
+    权限控制    :rbac, after db, 7d
 
-    section 阶段二：协同工作空间
-    项目机会服务    :project, after rbac, 15d
-    任务管理服务    :task, after project, 10d
-    可定制仪表盘    :dashboard, after task, 15d
-    看板视图开发    :kanban, after dashboard, 7d
+    section 阶段二 协同工作
+    项目服务    :project, after rbac, 15d
+    任务管理    :task, after project, 10d
+    仪表盘      :dashboard, after task, 15d
+    看板视图    :kanban, after dashboard, 7d
 
-    section 阶段三：自动化引擎
-    Camunda集成   :workflow, after kanban, 10d
-    BPMN流程建模  :bpmn, after workflow, 10d
-    Saga编排实现  :saga, after bpmn, 15d
-    自动化测试    :auto_test, after saga, 7d
+    section 阶段三 自动化
+    工作流集成   :workflow, after kanban, 10d
+    流程建模    :bpmn, after workflow, 10d
+    事务编排    :saga, after bpmn, 15d
+    自动测试    :auto_test, after saga, 7d
 
-    section 阶段四：智能层注入
-    AI服务架构    :ai_arch, after auto_test, 7d
-    RAG知识库构建 :rag, after ai_arch, 15d
-    智能体开发    :agents, after rag, 10d
-    AI功能测试    :ai_test, after agents, 10d
+    section 阶段四 智能化
+    AI架构      :ai_arch, after auto_test, 7d
+    知识库      :rag, after ai_arch, 15d
+    智能体      :agents, after rag, 10d
+    AI测试      :ai_test, after agents, 10d
 
-    section 阶段五：生态扩展
-    集成服务完善    :integration, after ai_test, 10d
-    企业微信集成    :wechat, after integration, 7d
-    钉钉集成       :dingtalk, after wechat, 7d
-    系统上线部署    :deploy, after dingtalk, 5d
+    section 阶段五 生态集成
+    集成服务    :integration, after ai_test, 10d
+    微信集成    :wechat, after integration, 7d
+    钉钉集成    :dingtalk, after wechat, 7d
+    系统部署    :deploy, after dingtalk, 5d
 ```
 
 该路线图展示了项目的5个实施阶段：
